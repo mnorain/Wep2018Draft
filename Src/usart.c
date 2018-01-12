@@ -10,7 +10,7 @@
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
-  * COPYRIGHT(c) 2017 STMicroelectronics
+  * COPYRIGHT(c) 2018 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -39,6 +39,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
+
 #include "gpio.h"
 
 /* USER CODE BEGIN 0 */
@@ -109,8 +110,11 @@ void UART1_OutString(uint8_t *pt){
 // Input: none
 // Output: none
 void UART1_FinishOutput(void){
-  while(HAL_UART_GetState(&huart1));
+  // Wait for entire tx message to be sent
+  // UART Transmit FIFO Empty =1, when Tx done
+  while(huart1.gState!=HAL_UART_STATE_READY){};
 }
+
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -258,7 +262,19 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 } 
 
 /* USER CODE BEGIN 1 */
+volatile static uint8_t rxData=0;
+void uart_init_RXinterrupt(void){
+		RxFifo_Init();
+		HAL_UART_Receive_IT(&huart1, &rxData,1);
+}
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance==USART1){
+		RxFifo_Put(rxData);
+		HAL_UART_Receive_IT(&huart1, &rxData,1);
+	}
+}
 /* USER CODE END 1 */
 
 /**

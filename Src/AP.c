@@ -113,7 +113,7 @@ const uint8_t NPI_SetAdvertisementSAP[] = {
   0x55,0x43,      // SNP Set Advertisement Data
   0x00,           // Scan Response Data
   20,0x09,        // length, type=LOCAL_NAME_COMPLETE
-  'S','h','a','p','e',' ','t','h','e',' ','W','o','r','l','d',' ','S','A','P',
+  'S','a','m','i',' ','S','h','a','f',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
 // connection interval range
   0x05,           // length of this data
   0x12,           // GAP_ADTYPE_SLAVE_CONN_INTERVAL_RANGE
@@ -130,7 +130,7 @@ uint8_t NPI_GATTSetDeviceName[] = {
   0x35,0x8C,      // SNP Set GATT Parameter (0x8C)
   0x01,           // Generic Access Service
   0x00,0x00,      // Device Name
-  'S','h','a','p','e',' ','t','h','e',' ','W','o','r','l','d',' ','0','0','1',
+  'S','a','m','i',' ',' ','t','h','e',' ','W','o','r','l','d',' ','0','0','1',
   0x77};          // FCS (calculated by AP_SendMessageResponse)
 
 uint8_t NPI_SetAdvertisementData[] = {   
@@ -138,7 +138,7 @@ uint8_t NPI_SetAdvertisementData[] = {
   0x55,0x43,      // SNP Set Advertisement Data
   0x00,           // Scan Response Data
   20,0x09,        // length, type=LOCAL_NAME_COMPLETE
-  'S','h','a','p','e',' ','t','h','e',' ','W','o','r','l','d',' ','0','0','1',
+  'S','a','m','i',' ',' ','t','h','e',' ','W','o','r','l','d',' ','0','0','1',
 // connection interval range
   0x05,           // length of this data
   0x12,           // GAP_ADTYPE_SLAVE_CONN_INTERVAL_RANGE
@@ -223,7 +223,7 @@ int AP_Init(void){int bwaiting;   int count = 0;
 //  if(UART0_CTL_R != 0x301){
 //    UART0_Init(); // if not on, enable
 //  }
-  OutString("\n\rReset CC2650");
+  OutString("\n\rReset CC2650zz");
 //#endif
   //UART1_Init();
   fcserr = 0;     // number of packets with FCS errors
@@ -239,6 +239,7 @@ int AP_Init(void){int bwaiting;   int count = 0;
         if((RecvBuf[3]==0x55)&&(RecvBuf[4]==0x01)){
           count = 600000;
           bwaiting = 0; // success
+					OutString("\n\rBLE Powered Up Correctly");
         }
       }
       count = count + 1;
@@ -253,6 +254,7 @@ int AP_Init(void){int bwaiting;   int count = 0;
       if((RecvBuf[3]==0x55)&&(RecvBuf[4]==0x01)){
         count = 6000000;
         bwaiting = 0; // success
+				OutString("\n\rHC System Reset");
       }
     }
     count = count + 1;

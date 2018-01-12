@@ -9,7 +9,7 @@
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
-  * COPYRIGHT(c) 2017 STMicroelectronics
+  * COPYRIGHT(c) 2018 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -40,9 +40,9 @@
 #include "stm32f0xx_hal.h"
 #include "usart.h"
 #include "gpio.h"
-#include "AP.h"
 
 /* USER CODE BEGIN Includes */
+#include "AP.h"
 #define UART0_OutString(STRING) printf(STRING)
 #define UART0_OutUHex(value) printf("%x", value);
 ///* Private function prototypes -----------------------------------------------*/
@@ -143,7 +143,7 @@ const uint8_t NPI_GATTSetDeviceNameMsg[] = {
   0x35,0x8C,      // SNP Set GATT Parameter (0x8C)
   0x01,           // Generic Access Service
   0x00,0x00,      // Device Name
-  'S','h','a','p','e',' ','t','h','e',' ','W','o','r','l','d',
+  'S','a','m','i',' ',' ','S','h','a','f','i','e',' ',' ',' ',
   0x77};          // FCS (calculated by AP_SendMessageResponse)
 
 
@@ -152,7 +152,7 @@ const uint8_t NPI_SetAdvertisementDataMsg[] = {
   0x55,0x43,      // SNP Set Advertisement Data
   0x00,           // Scan Response Data
   16,0x09,        // length, type=LOCAL_NAME_COMPLETE
-  'S','h','a','p','e',' ','t','h','e',' ','W','o','r','l','d',
+  'S','a','m','i',' ',' ','S','h','a','f','i','e',' ',' ',' ',
 // connection interval range
   0x05,           // length of this data
   0x12,           // GAP_ADTYPE_SLAVE_CONN_INTERVAL_RANGE
@@ -323,6 +323,7 @@ int main(void)
   MX_USART2_UART_Init();
 
   /* USER CODE BEGIN 2 */
+	uart_init_RXinterrupt();
 	 volatile int r1; uint16_t h; uint32_t time=0;
   uint8_t responseNeeded;
   //DisableInterrupts();
@@ -333,7 +334,7 @@ int main(void)
   UART0_OutString("\n\rVery Simple Application Processor\n\r");
   UART0_OutString("\n\rReset CC2650");
   r1 = AP_Init();  // debugging enabled with compiler flag APDEBUG in AP.c
-  EnableInterrupts();
+  //EnableInterrupts();
 
   UART0_OutString("\n\rGATT Set DeviceName");
   r1=AP_SendMessageResponse((uint8_t*)NPI_GATTSetDeviceNameMsg,RecvBuf,RECVSIZE);

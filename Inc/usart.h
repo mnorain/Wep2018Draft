@@ -10,7 +10,7 @@
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
-  * COPYRIGHT(c) 2017 STMicroelectronics
+  * COPYRIGHT(c) 2018 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -81,6 +81,9 @@ void UART1_OutChar(uint8_t data);
 // Input: pointer to a NULL-terminated string to be transferred
 // Output: none
 void UART1_OutString(uint8_t *pt);
+
+void UART1_FinishOutput(void);
+void uart_init_RXinterrupt(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
