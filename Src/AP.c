@@ -75,10 +75,14 @@ uint32_t NoSOFErr;    // debugging counts of no SOF errors
 // Input: none
 // Output: none
 void AP_Reset(void){
+	gpio_SetReset();
+	HAL_Delay(10);
+	gpio_SetMRDY();      // MRDY=1  
+	HAL_Delay(10);
   gpio_ClearReset();   // RESET=0    
-  gpio_SetMRDY();      // MRDY=1  
   HAL_Delay(10);
-  gpio_SetReset();     // RESET=1  
+  gpio_SetReset();     // RESET=1
+	HAL_Delay(10);
 }
 //*************message and message fragments**********
 const uint8_t HCI_EXT_ResetSystemCmd[] = {SOF,0x03,0x00,0x55,0x04,0x1D,0xFC,0x01,0xB2};

@@ -348,18 +348,18 @@ int main(void)
   r1=AP_SendMessageResponse((uint8_t*)NPI_AddServiceMsg,RecvBuf,RECVSIZE); 
   //---------------Characteristic1 is read/write 8 bits---------
   Data = 1;
-  UART0_OutString("\n\rAdd CharValue1");
-  r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharValue1,RecvBuf,RECVSIZE);
-  Handle1 = (RecvBuf[7]<<8)+RecvBuf[6]; // handle for this characteristic
-  UART0_OutString("\n\rAdd CharDescriptor1");
-  r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharDescriptor1,RecvBuf,RECVSIZE);
-  //-----------Characteristic2 is read only 8 bits-------------
-  UART0_OutString("\n\rAdd CharValue2");
-  r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharValue2,RecvBuf,RECVSIZE);
-  Handle2 = (RecvBuf[7]<<8)+RecvBuf[6]; // handle for this characteristic
-  UART0_OutString("\n\rAdd CharDescriptor2");
-  r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharDescriptor2,RecvBuf,RECVSIZE);
-  //-----------Characteristic3 is write only 8 bits----------
+//  UART0_OutString("\n\rAdd CharValue1");
+//  r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharValue1,RecvBuf,RECVSIZE);
+//  Handle1 = (RecvBuf[7]<<8)+RecvBuf[6]; // handle for this characteristic
+//  UART0_OutString("\n\rAdd CharDescriptor1");
+//  r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharDescriptor1,RecvBuf,RECVSIZE);
+//  //-----------Characteristic2 is read only 8 bits-------------
+//  UART0_OutString("\n\rAdd CharValue2");
+//  r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharValue2,RecvBuf,RECVSIZE);
+//  Handle2 = (RecvBuf[7]<<8)+RecvBuf[6]; // handle for this characteristic
+//  UART0_OutString("\n\rAdd CharDescriptor2");
+//  r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharDescriptor2,RecvBuf,RECVSIZE);
+//  //-----------Characteristic3 is write only 8 bits----------
   UART0_OutString("\n\rAdd CharValue3");
   r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharValue3,RecvBuf,RECVSIZE);
   Handle3 = (RecvBuf[7]<<8)+RecvBuf[6]; // handle for this characteristic
@@ -395,7 +395,7 @@ int main(void)
 	
   while (1)
   {
-		    time++;
+		time++;
     if(AP_RecvStatus()){
       if(AP_RecvMessage(RecvBuf,RECVSIZE)==APOK){
         AP_EchoReceived(APOK);        
@@ -409,27 +409,32 @@ int main(void)
           }else if(h == Handle3){// Handle3 could be write
             OutValue("\n\rWrite LED=",RecvBuf[12]);
             //LaunchPad_Output(RecvBuf[12]&0x07);
+						if(RecvBuf[12]=='0'){
+							HAL_GPIO_WritePin(LD4_GPIO_Port,LD4_Pin,0);
+						}else{
+							HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin,1);
+						}
           }
           if(responseNeeded){
             AP_SendMessage(NPI_WriteConfirmationMsg);
             AP_EchoSendMessage(NPI_WriteConfirmationMsg);
           }
         }
-        if((RecvBuf[3]==0x55)&&(RecvBuf[4]==0x87)){// SNP Characteristic Read Indication (0x87)
-          h = (RecvBuf[8]<<8)+RecvBuf[7]; // handle for this characteristic
-          // process possible read indications
-          if(h == Handle1){      // Handle1 could be read
-            NPI_ReadConfirmationMsg[12] = Data;
-            OutValue("\n\rRead Data=",NPI_ReadConfirmationMsg[12]);
-          }else if(h == Handle2){// Handle2 could be read
-            NPI_ReadConfirmationMsg[12] = 1; //LaunchPad_Input();
-            OutValue("\n\rRead Switch=",NPI_ReadConfirmationMsg[12]);
-          }
-          NPI_ReadConfirmationMsg[8] = RecvBuf[7]; // handle
-          NPI_ReadConfirmationMsg[9] = RecvBuf[8];
-          AP_SendMessage(NPI_ReadConfirmationMsg);
-          AP_EchoSendMessage(NPI_ReadConfirmationMsg);
-        }
+//        if((RecvBuf[3]==0x55)&&(RecvBuf[4]==0x87)){// SNP Characteristic Read Indication (0x87)
+//          h = (RecvBuf[8]<<8)+RecvBuf[7]; // handle for this characteristic
+//          // process possible read indications
+//          if(h == Handle1){      // Handle1 could be read
+//            NPI_ReadConfirmationMsg[12] = Data;
+//            OutValue("\n\rRead Data=",NPI_ReadConfirmationMsg[12]);
+//          }else if(h == Handle2){// Handle2 could be read
+//            NPI_ReadConfirmationMsg[12] = 1; //LaunchPad_Input();
+//            OutValue("\n\rRead Switch=",NPI_ReadConfirmationMsg[12]);
+//          }
+//          NPI_ReadConfirmationMsg[8] = RecvBuf[7]; // handle
+//          NPI_ReadConfirmationMsg[9] = RecvBuf[8];
+//          AP_SendMessage(NPI_ReadConfirmationMsg);
+//          AP_EchoSendMessage(NPI_ReadConfirmationMsg);
+//        }
         if((RecvBuf[3]==0x55)&&(RecvBuf[4]==0x8B)){// SNP CCCD Updated Indication (0x8B)
           h = (RecvBuf[8]<<8)+RecvBuf[7]; // handle for this characteristic
           responseNeeded = RecvBuf[9];

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [blE\blE.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image blE\blE.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Thu Jan 11 19:49:35 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Tue Jan 16 17:13:45 2018
 <BR><P>
 <H3>Maximum Stack Usage =        180 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -231,10 +231,6 @@ Global Symbols
 
 <P><STRONG><a name="[79]"></a>_ll_shift_l</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, llshl.o(.text), UNUSED)
 
-<P><STRONG><a name="[7a]"></a>__decompress</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __dczerorl2.o(.text), UNUSED)
-
-<P><STRONG><a name="[7b]"></a>__decompress1</STRONG> (Thumb, 86 bytes, Stack size unknown bytes, __dczerorl2.o(.text), UNUSED)
-
 <P><STRONG><a name="[2a]"></a>AP_EchoReceived</STRONG> (Thumb, 62 bytes, Stack size 16 bytes, ap.o(i.AP_EchoReceived))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = AP_EchoReceived &rArr; __2printf
 </UL>
@@ -295,13 +291,13 @@ Global Symbols
 <LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[2f]"></a>AP_Reset</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, ap.o(i.AP_Reset))
+<P><STRONG><a name="[2f]"></a>AP_Reset</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, ap.o(i.AP_Reset))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = AP_Reset &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_SetReset
+<LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_SetReset
 <LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_SetMRDY
-<LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_ClearReset
+<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_ClearReset
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AP_Init
 </UL>
@@ -358,9 +354,10 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[60]"></a>HAL_GPIO_WritePin</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f0xx_hal_gpio.o(i.HAL_GPIO_WritePin))
-<BR><BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_SetReset
+<BR><BR>[Called By]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_SetReset
 <LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_SetMRDY
-<LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_ClearReset
+<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_ClearReset
 <LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_ClearMRDY
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 </UL>
@@ -723,7 +720,7 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
 </UL>
 
-<P><STRONG><a name="[7c]"></a>__1printf$5</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf5.o(i.__0printf$5), UNUSED)
+<P><STRONG><a name="[7a]"></a>__1printf$5</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf5.o(i.__0printf$5), UNUSED)
 
 <P><STRONG><a name="[2b]"></a>__2printf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf5.o(i.__0printf$5))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2printf
@@ -735,11 +732,11 @@ Global Symbols
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OutValue
 </UL>
 
-<P><STRONG><a name="[7d]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
+<P><STRONG><a name="[7b]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
 
-<P><STRONG><a name="[7e]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
+<P><STRONG><a name="[7c]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
 
-<P><STRONG><a name="[7f]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
+<P><STRONG><a name="[7d]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
 <P><STRONG><a name="[23]"></a>fputc</STRONG> (Thumb, 18 bytes, Stack size 16 bytes, main.o(i.fputc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = fputc &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
@@ -757,7 +754,7 @@ Global Symbols
 <LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AP_RecvMessage
 </UL>
 
-<P><STRONG><a name="[37]"></a>gpio_ClearReset</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, gpio.o(i.gpio_ClearReset))
+<P><STRONG><a name="[39]"></a>gpio_ClearReset</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, gpio.o(i.gpio_ClearReset))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = gpio_ClearReset
 </UL>
 <BR>[Calls]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -785,7 +782,7 @@ Global Symbols
 <LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AP_RecvMessage
 </UL>
 
-<P><STRONG><a name="[39]"></a>gpio_SetReset</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, gpio.o(i.gpio_SetReset))
+<P><STRONG><a name="[37]"></a>gpio_SetReset</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, gpio.o(i.gpio_SetReset))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = gpio_SetReset
 </UL>
 <BR>[Calls]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -793,7 +790,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AP_Reset
 </UL>
 
-<P><STRONG><a name="[1f]"></a>main</STRONG> (Thumb, 754 bytes, Stack size 8 bytes, main.o(i.main))
+<P><STRONG><a name="[1f]"></a>main</STRONG> (Thumb, 596 bytes, Stack size 8 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 180<LI>Call Chain = main &rArr; SystemClock_Config &rArr; HAL_RCC_ClockConfig &rArr; HAL_RCC_GetSysClockFreq &rArr; __aeabi_uidivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_init_RXinterrupt
@@ -809,6 +806,7 @@ Global Symbols
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AP_EchoReceived
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OutValue
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 <LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
