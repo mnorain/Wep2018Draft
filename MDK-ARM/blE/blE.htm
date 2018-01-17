@@ -3,7 +3,7 @@
 <title>Static Call Graph - [blE\blE.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image blE\blE.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Tue Jan 16 17:13:45 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Wed Jan 17 05:20:30 2018
 <BR><P>
 <H3>Maximum Stack Usage =        180 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -257,7 +257,7 @@ Global Symbols
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AP_EchoReceived
 </UL>
 
-<P><STRONG><a name="[2e]"></a>AP_Init</STRONG> (Thumb, 154 bytes, Stack size 24 bytes, ap.o(i.AP_Init))
+<P><STRONG><a name="[2e]"></a>AP_Init</STRONG> (Thumb, 178 bytes, Stack size 24 bytes, ap.o(i.AP_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = AP_Init &rArr; AP_SendMessageResponse &rArr; AP_SendMessage &rArr; UART1_OutChar &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AP_Reset
@@ -291,7 +291,7 @@ Global Symbols
 <LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[2f]"></a>AP_Reset</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, ap.o(i.AP_Reset))
+<P><STRONG><a name="[2f]"></a>AP_Reset</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, ap.o(i.AP_Reset))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = AP_Reset &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
@@ -558,7 +558,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_EndTransmit_IT
 </UL>
 
-<P><STRONG><a name="[5f]"></a>MX_GPIO_Init</STRONG> (Thumb, 144 bytes, Stack size 48 bytes, gpio.o(i.MX_GPIO_Init))
+<P><STRONG><a name="[5f]"></a>MX_GPIO_Init</STRONG> (Thumb, 142 bytes, Stack size 48 bytes, gpio.o(i.MX_GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = MX_GPIO_Init &rArr; HAL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin

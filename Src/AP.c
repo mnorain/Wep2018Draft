@@ -82,7 +82,6 @@ void AP_Reset(void){
   gpio_ClearReset();   // RESET=0    
   HAL_Delay(10);
   gpio_SetReset();     // RESET=1
-	HAL_Delay(10);
 }
 //*************message and message fragments**********
 const uint8_t HCI_EXT_ResetSystemCmd[] = {SOF,0x03,0x00,0x55,0x04,0x1D,0xFC,0x01,0xB2};
@@ -252,8 +251,10 @@ int AP_Init(void){int bwaiting;   int count = 0;
   AP_SendMessageResponse((uint8_t*)HCI_EXT_ResetSystemCmd,RecvBuf,RECVSIZE); 
   count = 0;  // should get SNP power up within 120 ms (duration is arbitrary and 'count' value is uncalibrated)
   bwaiting = 1; // waiting for SNP power up
+	OutString("\n\rgoingToWhile");
   while(count < 6000000){
     if(AP_RecvStatus()){
+			OutString("\n\rIfConditionOneMet");
       AP_RecvMessage(RecvBuf,RECVSIZE);
       if((RecvBuf[3]==0x55)&&(RecvBuf[4]==0x01)){
         count = 6000000;
@@ -263,6 +264,7 @@ int AP_Init(void){int bwaiting;   int count = 0;
     }
     count = count + 1;
   } 
+	OutString("\n\rTimeOut");
   if(bwaiting){
     TimeOutErr++;  // no response error
     return APFAIL;
