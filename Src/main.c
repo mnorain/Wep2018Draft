@@ -38,6 +38,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f0xx_hal.h"
+#include "adc.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -103,7 +104,7 @@ uint16_t Handle2;    // number associated with this characteristic
 // third characteristic is called "LEDs" and is a write-only parameter that sets the LED (0-7)
 uint16_t Handle3;    // number associated with this characteristic
 // fourth characteristic is called "Count" and is a local counter sent periodically to the phone
-uint8_t Count;
+uint8_t light;
 uint16_t Handle4;    // number associated with this characteristic
 uint16_t CCCDhandle; // number associated with this CCCD, Client Characteristic Configuration Descriptor
 uint16_t CCCDvalue;  // 0 means inactive, 1 means please notify
@@ -138,21 +139,12 @@ const uint8_t NPI_SetAdvertisementMsg[] = {
   0x00,           // Key state
   0xEE};          // FCS (calculated by AP_SendMessageResponse)
 
-const uint8_t NPI_GATTSetDeviceNameMsg[] = {   
-  SOF,18,0x00,    // length = 18
-  0x35,0x8C,      // SNP Set GATT Parameter (0x8C)
-  0x01,           // Generic Access Service
-  0x00,0x00,      // Device Name
-  'S','a','m','i',' ',' ','S','h','a','f','i','e',' ',' ',' ',
-  0x77};          // FCS (calculated by AP_SendMessageResponse)
-
-
 const uint8_t NPI_SetAdvertisementDataMsg[] = {   
   SOF,27,0x00,    // length = 27
   0x55,0x43,      // SNP Set Advertisement Data
   0x00,           // Scan Response Data
   16,0x09,        // length, type=LOCAL_NAME_COMPLETE
-  'S','a','m','i',' ',' ','S','h','a','f','i','e',' ',' ',' ',
+  'N','O','R','A','I','N',' ',' ',' ',' ',' ',' ',' ',' ',' ',
 // connection interval range
   0x05,           // length of this data
   0x12,           // GAP_ADTYPE_SLAVE_CONN_INTERVAL_RANGE
@@ -321,24 +313,17 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
+  MX_ADC_Init();
 
   /* USER CODE BEGIN 2 */
 	uart_init_RXinterrupt();
 	 volatile int r1; uint16_t h; uint32_t time=0;
   uint8_t responseNeeded;
-  //DisableInterrupts();
-  //Clock_InitFastest();  // processor running at max speed
-  //UART0_Init();         // debugging output
-  //LaunchPad_Init();     // switches and LEDs
-  //EnableInterrupts();
+
   UART0_OutString("\n\rVery Simple Application Processor\n\r");
   UART0_OutString("\n\rReset CC2650");
-  r1 = AP_Init();  // debugging enabled with compiler flag APDEBUG in AP.c
-  //EnableInterrupts();
+  r1 = AP_Init();
 
-  UART0_OutString("\n\rGATT Set DeviceName");
-  r1=AP_SendMessageResponse((uint8_t*)NPI_GATTSetDeviceNameMsg,RecvBuf,RECVSIZE);
-  
   UART0_OutString("\n\rNPI_GetStatus");
   r1=AP_SendMessageResponse((uint8_t*)NPI_GetStatusMsg,RecvBuf,RECVSIZE);
   UART0_OutString("\n\rNPI_GetVersion");
@@ -348,17 +333,7 @@ int main(void)
   r1=AP_SendMessageResponse((uint8_t*)NPI_AddServiceMsg,RecvBuf,RECVSIZE); 
   //---------------Characteristic1 is read/write 8 bits---------
   Data = 1;
-//  UART0_OutString("\n\rAdd CharValue1");
-//  r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharValue1,RecvBuf,RECVSIZE);
-//  Handle1 = (RecvBuf[7]<<8)+RecvBuf[6]; // handle for this characteristic
-//  UART0_OutString("\n\rAdd CharDescriptor1");
-//  r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharDescriptor1,RecvBuf,RECVSIZE);
-//  //-----------Characteristic2 is read only 8 bits-------------
-//  UART0_OutString("\n\rAdd CharValue2");
-//  r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharValue2,RecvBuf,RECVSIZE);
-//  Handle2 = (RecvBuf[7]<<8)+RecvBuf[6]; // handle for this characteristic
-//  UART0_OutString("\n\rAdd CharDescriptor2");
-//  r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharDescriptor2,RecvBuf,RECVSIZE);
+
 //  //-----------Characteristic3 is write only 8 bits----------
   UART0_OutString("\n\rAdd CharValue3");
   r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharValue3,RecvBuf,RECVSIZE);
@@ -366,7 +341,7 @@ int main(void)
   UART0_OutString("\n\rAdd CharDescriptor3");
   r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharDescriptor3,RecvBuf,RECVSIZE);
   //-----------Characteristic4 is notify 8 bits-------------
-  Count = 0;
+  light = 0;
   UART0_OutString("\n\rAdd CharValue4");
   r1=AP_SendMessageResponse((uint8_t*)NPI_AddCharValue4,RecvBuf,RECVSIZE);
   Handle4 = (RecvBuf[7]<<8)+RecvBuf[6]; // handle for this characteristic
@@ -420,21 +395,7 @@ int main(void)
             AP_EchoSendMessage(NPI_WriteConfirmationMsg);
           }
         }
-//        if((RecvBuf[3]==0x55)&&(RecvBuf[4]==0x87)){// SNP Characteristic Read Indication (0x87)
-//          h = (RecvBuf[8]<<8)+RecvBuf[7]; // handle for this characteristic
-//          // process possible read indications
-//          if(h == Handle1){      // Handle1 could be read
-//            NPI_ReadConfirmationMsg[12] = Data;
-//            OutValue("\n\rRead Data=",NPI_ReadConfirmationMsg[12]);
-//          }else if(h == Handle2){// Handle2 could be read
-//            NPI_ReadConfirmationMsg[12] = 1; //LaunchPad_Input();
-//            OutValue("\n\rRead Switch=",NPI_ReadConfirmationMsg[12]);
-//          }
-//          NPI_ReadConfirmationMsg[8] = RecvBuf[7]; // handle
-//          NPI_ReadConfirmationMsg[9] = RecvBuf[8];
-//          AP_SendMessage(NPI_ReadConfirmationMsg);
-//          AP_EchoSendMessage(NPI_ReadConfirmationMsg);
-//        }
+
         if((RecvBuf[3]==0x55)&&(RecvBuf[4]==0x8B)){// SNP CCCD Updated Indication (0x8B)
           h = (RecvBuf[8]<<8)+RecvBuf[7]; // handle for this characteristic
           responseNeeded = RecvBuf[9];
@@ -450,12 +411,13 @@ int main(void)
     }
     if(time>4000000){
       time = 0;
-      Count++;
-      if(CCCDvalue){      
+      //Count++;
+      if(CCCDvalue){ 
+				light=readLight();
         NPI_SendNotificationIndicationMsg[7] = Handle4&0x0FF; // handle
         NPI_SendNotificationIndicationMsg[8] = Handle4>>8; 
-        NPI_SendNotificationIndicationMsg[11] = Count;
-        OutValue("\n\rSend Count=",Count);
+        NPI_SendNotificationIndicationMsg[11] = light;
+        OutValue("\n\rSend Count=",light);
         r1=AP_SendMessageResponse(NPI_SendNotificationIndicationMsg,RecvBuf,RECVSIZE);
       }
     }
@@ -479,9 +441,11 @@ void SystemClock_Config(void)
 
     /**Initializes the CPU, AHB and APB busses clocks 
     */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSI14;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSI14State = RCC_HSI14_ON;
   RCC_OscInitStruct.HSICalibrationValue = 16;
+  RCC_OscInitStruct.HSI14CalibrationValue = 16;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL12;

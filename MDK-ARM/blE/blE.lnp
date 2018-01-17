@@ -6,6 +6,7 @@
 "ble\stm32f0xx_it.o"
 "ble\usart.o"
 "ble\ap.o"
+"ble\adc.o"
 "ble\stm32f0xx_hal_tim_ex.o"
 "ble\stm32f0xx_hal_tim.o"
 "ble\stm32f0xx_hal_pwr.o"
@@ -22,6 +23,8 @@
 "ble\stm32f0xx_hal_cortex.o"
 "ble\stm32f0xx_hal_uart_ex.o"
 "ble\stm32f0xx_hal_uart.o"
+"ble\stm32f0xx_hal_adc.o"
+"ble\stm32f0xx_hal_adc_ex.o"
 "ble\startup_stm32f030x8.o"
 --library_type=microlib --strict --scatter "blE\blE.sct"
 --diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
