@@ -46,14 +46,6 @@
 #include "AP.h"
 #define UART0_OutString(STRING) printf(STRING)
 #define UART0_OutUHex(value) printf("%x", value);
-///* Private function prototypes -----------------------------------------------*/
-//#ifdef __GNUC__
-//  /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
-//     set to 'Yes') calls __io_putchar() */
-//  #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-//#else
-//  #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-//#endif /* __GNUC__ */
 
 /**
   * @brief  Retargets the C library printf function to the USART.
@@ -98,9 +90,9 @@ void SystemClock_Config(void);
 //----------------very simple application processor-----------
 // first characteristic is called "Data" and is a read/write parameter exchanged with the phone
 uint8_t Data;        // read/write parameter
-uint16_t Handle1;    // number associated with this characteristic
-// second characteristic is called "Switches" and is a read only parameter that returns switch value (0-3)
-uint16_t Handle2;    // number associated with this characteristic
+//uint16_t Handle1;    // number associated with this characteristic
+//// second characteristic is called "Switches" and is a read only parameter that returns switch value (0-3)
+//uint16_t Handle2;    // number associated with this characteristic
 // third characteristic is called "LEDs" and is a write-only parameter that sets the LED (0-7)
 uint16_t Handle3;    // number associated with this characteristic
 // fourth characteristic is called "Count" and is a local counter sent periodically to the phone
@@ -206,44 +198,6 @@ void OutValue(char *label,uint32_t value){
   UART0_OutString(label);
   UART0_OutUHex(value);
 }
-
-const uint8_t NPI_AddCharValue1[] = {   
-  SOF,0x08,0x00,  // length = 8
-  0x35,0x82,      // SNP Add Characteristic Value Declaration
-  0x03,           // GATT Read+Write Permission
-  0x0A,0x00,      // GATT Read+Write Properties
-  0x00,           // RFU
-  0x00,0x02,      // Maximum length of the attribute value=512
-  0xF1,0xFF,      // UUID
-  0xBA};          // FCS (calculated by AP_SendMessageResponse)
-const uint8_t NPI_AddCharDescriptor1[] = {   
-  SOF,11,0x00,    // length = 11
-  0x35,0x83,      // SNP Add Characteristic Descriptor Declaration
-  0x80,           // User Description String
-  0x01,           // GATT Read Permissions
-  0x05,0x00,      // Maximum Possible length of the user description string
-  0x05,0x00,      // Initial length of the user description string
-  'D','a','t','a',0, // Initial user description string
-  0x0C};          // FCS (calculated by AP_SendMessageResponse)
-
-const uint8_t NPI_AddCharValue2[] = {   
-  SOF,0x08,0x00,  // length = 8
-  0x35,0x82,      // SNP Add Characteristic Value Declaration
-  0x01,           // GATT Read Permission
-  0x02,0x00,      // GATT Read Properties
-  0x00,           // RFU
-  0x00,0x02,      // Maximum length of the attribute value=512
-  0xF2,0xFF,      // UUID
-  0xB3};          // FCS (calculated by AP_SendMessageResponse)
-const uint8_t NPI_AddCharDescriptor2[] = {   
-  SOF,15,0x00,    // length = 15
-  0x35,0x83,      // SNP Add Characteristic Descriptor Declaration
-  0x80,           // User Description String
-  0x01,           // GATT Read Permissions
-  0x09,0x00,      // Maximum Possible length of the user description string
-  0x09,0x00,      // Initial length of the user description string
-  'S','w','i','t','c','h','e','s',0, // Initial user description string
-  0x0F};          // FCS (calculated by AP_SendMessageResponse)
 
 const uint8_t NPI_AddCharValue3[] = {   
   SOF,0x08,0x00,  // length = 8
@@ -378,16 +332,14 @@ int main(void)
           h = (RecvBuf[8]<<8)+RecvBuf[7]; // handle for this characteristic
           responseNeeded = RecvBuf[9];
           // process possible write indications
-          if(h == Handle1){      // Handle1 could be write
-            Data = RecvBuf[12];
-            OutValue("\n\rWrite Data=",RecvBuf[12]);
-          }else if(h == Handle3){// Handle3 could be write
+					
+					if(h == Handle3){// Handle3 could be write
             OutValue("\n\rWrite LED=",RecvBuf[12]);
             //LaunchPad_Output(RecvBuf[12]&0x07);
 						if(RecvBuf[12]=='0'){
-							HAL_GPIO_WritePin(LD4_GPIO_Port,LD4_Pin,0);
+							HAL_GPIO_WritePin(LD4_GPIO_Port,LD4_Pin,GPIO_PIN_RESET);
 						}else{
-							HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin,1);
+							HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin,GPIO_PIN_SET);
 						}
           }
           if(responseNeeded){
